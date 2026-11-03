@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Будова слова: потяг-детектив</title>
+<style>
+:root{--ink:#2b3a55;--ok:#43b85a;--okbg:#dff6e3;--bad:#e5484d;--badbg:#fde4e4;--E:#f6cf4a;--B:#f4a259;--R:#ef7b6c;--P:#b79ae0;--S:#4fb8ad}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;min-height:100vh;font-family:"Trebuchet MS","Segoe UI",system-ui,sans-serif;color:var(--ink);background:linear-gradient(#d8eefc,#f4fbf0)}
+main{max-width:760px;margin:0 auto;padding:14px}
+h1{font-size:clamp(22px,5.5vw,34px);margin:8px 0 2px;text-align:center}
+h2{margin:4px 0 8px}
+.sub{text-align:center;margin:0 0 10px}
+.card{background:#fff;border-radius:18px;padding:16px;box-shadow:0 4px 0 #cfdbea;margin-top:10px}
+.train{display:flex;gap:6px;margin-top:10px}
+.wg{flex:1;border-radius:12px 12px 4px 4px;padding:7px 3px;text-align:center;font-size:12px;font-weight:700;background:#e3e9f2;color:#7a869c;border-bottom:6px solid #b8c2d4}
+.wg.cur{background:var(--c);color:var(--ink);border-bottom-color:rgba(0,0,0,.25);transform:translateY(-3px)}
+.wg.done{background:var(--c);color:var(--ink);opacity:.75;border-bottom-color:rgba(0,0,0,.2)}
+.steps{list-style:none;padding:0;margin:8px 0}
+.steps li{display:flex;gap:9px;margin:7px 0;line-height:1.35}
+.steps i{flex:none;width:15px;height:15px;border-radius:4px;margin-top:3px}
+button{font-family:inherit;color:var(--ink);cursor:pointer}
+button:focus-visible{outline:3px solid #2b6cdf;outline-offset:2px}
+.go{background:#2f6fe4;color:#fff;border:0;border-radius:14px;padding:12px 22px;font-size:17px;font-weight:700;box-shadow:0 4px 0 #1d4aa3}
+.ghost{background:#fff;border:2px solid #c7d2e4;border-radius:14px;padding:10px 16px;font-size:15px;font-weight:700}
+.row{display:flex;gap:10px;justify-content:space-between;margin-top:14px;flex-wrap:wrap}
+.lvl{font-weight:700;font-size:15px;color:#5a6b8c}
+#task{font-size:17px;line-height:1.4;margin:6px 0}
+.word{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;margin:14px 0}
+.tile{display:inline-flex;align-items:center;justify-content:center;width:clamp(32px,9vw,50px);height:clamp(40px,11vw,58px);font-family:inherit;font-weight:800;font-size:clamp(18px,5.4vw,28px);text-transform:uppercase;border:0;border-radius:8px;background:#f5dcaa;border-bottom:5px solid #cfa55f;color:#5a3d12}
+button.tile{cursor:pointer}
+.tile.p{border-bottom-color:rgba(0,0,0,.25);color:var(--ink)}
+.tile.ok{background:var(--ok)!important;color:#fff;border-bottom-color:#2d8a41}
+.tile.bad{background:var(--bad)!important;color:#fff;border-bottom-color:#a82b30}
+#tools{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.tool{display:inline-flex;gap:7px;align-items:center;background:#fff;border:2px solid #c7d2e4;border-radius:12px;padding:8px 12px;font-weight:700;font-size:15px}
+.tool.on{border-color:var(--ink);background:#f1f5fb}
+.tool.ok{background:var(--okbg);border-color:var(--ok)}
+.tool.bad{background:var(--badbg);border-color:var(--bad)}
+.dot{width:14px;height:14px;border-radius:4px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:12px 0}
+.chip{background:#f1f5fb;border-radius:12px;padding:8px 14px;font-size:18px;font-weight:700}
+.opts{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:12px 0}
+.opt{min-width:92px;background:#fff;border:2px solid #c7d2e4;border-radius:14px;padding:12px 18px;font-size:20px;font-weight:700;box-shadow:0 3px 0 #d5dbe6}
+.opt.ok{background:var(--ok);border-color:#2d8a41;color:#fff;opacity:1}
+.opt.bad{background:var(--bad);border-color:#a82b30;color:#fff;opacity:1}
+.fb{border-radius:14px;padding:10px 14px;margin-top:14px;font-weight:700}
+.fb.ok{background:var(--okbg);border:2px solid var(--ok)}
+.fb.bad{background:var(--badbg);border:2px solid var(--bad)}
+.ans{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:10px 0 2px}
+.g{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:12px;font-weight:400}
+.g div{display:flex;gap:2px}
+.g .tile{width:30px;height:36px;font-size:16px;border-bottom-width:3px}
+#hint{background:#f1f5fb;border-radius:14px;padding:6px 14px;margin-top:12px}
+.big{font-size:46px;font-weight:800;text-align:center}
+.stars{text-align:center;font-size:34px;color:#f0b429;letter-spacing:4px}
+.lr{display:grid;grid-template-columns:150px 1fr 40px;gap:8px;align-items:center;margin:8px 0;font-size:15px}
+.bar{height:14px;background:#e3e9f2;border-radius:8px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--ok)}
+li.m{margin:8px 0;line-height:1.4}
+@media(max-width:480px){.lr{grid-template-columns:110px 1fr 36px;font-size:13px}.wg{font-size:11px}}
+</style>
+</head>
+<body>
+<main>
+<h1>Будова слова: потяг-детектив</h1>
+<p class="sub">Розбирай слова, як справжній слідчий!</p>
+<div class="train" id="train" hidden></div>
+
+<section class="card" id="start">
+<h2>Вирушаємо в розслідування!</h2>
+<p>Порядок розбору слова за будовою:</p>
+<ol class="steps">
+<li><i style="background:var(--E)"></i><span><b>Закінчення</b> — змінна частина слова. Знаходимо її першою: змінюємо форму слова.</span></li>
+<li><i style="background:var(--B)"></i><span><b>Основа</b> — уся частина слова без закінчення.</span></li>
+<li><i style="background:var(--R)"></i><span><b>Корінь</b> — спільна частина спільнокореневих слів (добираємо їх з інших частин мови).</span></li>
+<li><i style="background:var(--P)"></i><span><b>Префікс</b> — стоїть перед коренем.</span></li>
+<li><i style="background:var(--S)"></i><span><b>Суфікс</b> — стоїть після кореня, перед закінченням.</span></li>
+</ol>
+<p>4 рівні, у кожному — нові слова. Правильні відповіді підсвічуються зеленим, помилки — червоним. Наприкінці буде підсумок.</p>
+<button class="go" id="go">Почати</button>
+</section>
+
+<section class="card" id="play" hidden>
+<div class="lvl" id="lvl"></div>
+<p id="task"></p>
+<div id="stage"></div>
+<div id="tools"></div>
+<div class="fb" id="fb" hidden></div>
+<div id="hint" hidden></div>
+<div class="row"><button class="ghost" id="hintb">Підказка</button><button class="go" id="chk">Перевірити</button></div>
+</section>
+
+<section class="card" id="end" hidden></section>
+</main>
+
+<script>
+const $=s=>document.querySelector(s);
+const h=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e};
+const sh=a=>a.map(x=>[Math.random(),x]).sort((p,q)=>p[0]-q[0]).map(x=>x[1]);
+const cap=s=>s[0].toUpperCase()+s.slice(1);
+const T={P:['префікс'],R:['корінь'],S:['суфікс'],E:['закінчення'],B:['основа']};
+const SYM={E:'□',R:'⌒',P:'⌐',S:'∧'};
+
+const LV=[
+{n:'Закінчення',c:'E',k:'t',tools:['E'],
+ t:'Знайди закінчення: познач букви, які змінюються, коли змінюємо форму слова (книга — книги). Якщо закінчення немає, натисни «Нульове закінчення».',
+ pool:['B-книг E-а','B-ліс','B-діт E-ям','B-зелен E-ий','B-вікн E-о','B-мор E-ем','B-сонц E-е','B-будинок','B-квіт E-ами','B-веснян E-ий','B-чита E-ю']},
+{n:'Корінь',c:'R',k:'q'},
+{n:'Префікс і суфікс',c:'P',k:'t',tools:['P','S'],
+ t:'Познач префікс (стоїть перед коренем) і суфікс (після кореня). Корінь і закінчення позначати не треба.',
+ pool:['P-пере R-хід','R-ліс S-ник','P-при R-їзд','R-чит S-ач','R-казк S-ов E-ий','P-за R-пис S-к E-а','P-роз R-мов E-а','R-зим S-ов E-ий']},
+{n:'Повний розбір',c:'S',k:'t',tools:['P','R','S','E'],
+ t:'Розбери слово за будовою: познач усі частини. Не забудь про нульове закінчення!',
+ pool:['P-під R-вод S-н E-ий','P-без R-хмар S-н E-ий','P-при R-мор S-ськ E-ий','P-без R-сон S-н E-ий','R-весн S-ян E-ий','P-пере R-ліс S-ок','P-від R-літ','P-під R-пис S-к E-а']}
+];
+const RT=[
+[['ліс','лісок','лісовий','лісник'],'ліс',['ліс','лісов','ник','лі']],
+[['вода','водяний','підводний','водій'],'вод',['вод','вода','підвод','ій']],
+[['сад','садок','садівник','садовий'],'сад',['сад','садів','ник','са']],
+[['хліб','хлібний','хлібина','хлібниця'],'хліб',['хліб','хлібн','ина','хлі']],
+[['море','морський','моряк','приморський'],'мор',['мор','море','морськ','при']],
+[['квітка','квітник','квітковий','квіти'],'квіт',['квіт','квітк','ник','кові']]];
+const OD=[
+[['зима','зимовий','зимувати'],'зірка'],
+[['рука','ручний','рукавиця'],'ріка'],
+[['вода','водяний','водій'],'ворона'],
+[['ліс','лісник','лісовий'],'лист'],
+[['сад','садівник','садок'],'сало'],
+[['мороз','морозний','морозиво'],'море']];
+
+let lv,items,idx,sc,bad,done,sel,zero,act,cur,tiles,zb;
+
+const parse=s=>{const m=s.split(' ').map(x=>{const[t,w]=x.split('-');return{t,x:w}});const L=[];m.forEach(p=>[...p.x].forEach(ch=>L.push({ch,t:p.t})));return{m,L,s:m.map(p=>p.x).join('|')}};
+
+function mk(i){
+ if(i==1)return sh([
+  ...sh(RT).slice(0,3).map(r=>({q:'r',ws:r[0],o:sh(r[2]),a:r[1]})),
+  ...sh(OD).slice(0,3).map(r=>({q:'o',ws:sh([...r[0],r[1]]),a:r[1],rel:r[0]}))]);
+ return sh(LV[i].pool).slice(0,6);
+}
+
+function train(){
+ $('#train').hidden=false;
+ $('#train').innerHTML=LV.map((L,i)=>`<div class="wg ${i<lv?'done':i==lv?'cur':''}" style="--c:var(--${L.c})">${i<lv?'✓ ':''}${i+1}. ${L.n}</div>`).join('');
+}
+
+function start(){sc=[0,0,0,0];bad=[];$('#start').hidden=true;$('#end').hidden=true;$('#play').hidden=false;go(0)}
+function go(i){lv=i;items=mk(i);idx=0;show()}
+function nxt(){return(lv==3&&idx==items.length-1)?'Результат':'Далі'}
+
+function show(){
+ train();
+ if(idx>=items.length){lv<3?go(lv+1):fin();return}
+ const L=LV[lv],it=items[idx],st=$('#stage'),tl=$('#tools'),chk=$('#chk');
+ done=false;sel=[];zero=false;zb=null;
+ $('#lvl').textContent=`Рівень ${lv+1}: ${L.n} (${idx+1} з ${items.length})`;
+ $('#fb').hidden=true;$('#hint').hidden=true;st.innerHTML=tl.innerHTML='';
+ if(L.k=='q'){
+  chk.hidden=true;
+  const odd=it.q=='o';
+  $('#task').textContent=odd?'Одне слово тут зайве — воно не споріднене з іншими. Знайди його!':'Знайди корінь — спільну частину всіх цих слів.';
+  const box=h('div',odd?'chips':'chips');
+  if(odd){it.ws.forEach(v=>{const b=h('button','opt',v);b.onclick=()=>pick(b,v);box.append(b)});st.append(box)}
+  else{it.ws.forEach(v=>box.append(h('span','chip',v)));st.append(box);const o=h('div','opts');it.o.forEach(v=>{const b=h('button','opt',v);b.onclick=()=>pick(b,v);o.append(b)});st.append(o)}
+  return;
+ }
+ chk.hidden=false;chk.textContent='Перевірити';
+ $('#task').textContent=L.t;
+ cur=parse(it);act=L.tools[0];
+ const wd=h('div','word');
+ tiles=cur.L.map((l,i)=>{const b=h('button','tile',l.ch);
+  b.onclick=()=>{if(done)return;sel[i]=sel[i]==act?'':act;b.className='tile'+(sel[i]?' p':'');b.style.background=sel[i]?`var(--${sel[i]})`:''};
+  wd.append(b);return b});
+ st.append(wd);
+ L.tools.forEach(t=>{const b=h('button','tool');b.dataset.t=t;
+  b.innerHTML=`<span class="dot" style="background:var(--${t})"></span>${cap(T[t][0])} ${SYM[t]}`;
+  b.onclick=()=>{if(done)return;act=t;upd()};tl.append(b)});
+ if(L.tools.includes('E')){zb=h('button','tool','Нульове закінчення (0)');zb.onclick=()=>{if(done)return;zero=!zero;zb.classList.toggle('on',zero)};tl.append(zb)}
+ upd();
+}
+function upd(){document.querySelectorAll('#tools [data-t]').forEach(b=>b.classList.toggle('on',b.dataset.t==act))}
+
+function fbk(ok,msg,extra){const f=$('#fb');f.className='fb '+(ok?'ok':'bad');f.textContent=msg;if(extra)f.append(extra);f.hidden=false}
+
+function ans(w,z){
+ const d=h('div','ans');
+ w.m.forEach(p=>{const g=h('div','g'),r=h('div');
+  [...p.x].forEach(ch=>{const t=h('span','tile p',ch);t.style.background=`var(--${p.t})`;r.append(t)});
+  g.append(r,h('span','',T[p.t][0]));d.append(g)});
+ if(z){const g=h('div','g'),r=h('div'),t=h('span','tile p','0');t.style.background='#fff';t.style.border='2px dashed #cfa55f';r.append(t);g.append(r,h('span','','нульове закінчення'));d.append(g)}
+ return d;
+}
+
+function check(){
+ const L=LV[lv],w=cur;done=true;let ok=true;
+ const ex=w.L.map(l=>L.tools.includes(l.t)?l.t:'');
+ const ze=L.tools.includes('E')&&!w.L.some(l=>l.t=='E');
+ tiles.forEach((b,i)=>{const g=(sel[i]||'')==ex[i];ok=ok&&g;b.classList.add(g?'ok':'bad')});
+ if(zb){if(zero!=ze){ok=false;zb.classList.add('bad')}else if(zero)zb.classList.add('ok')}
+ if(ok){sc[lv]++;fbk(true,'Правильно! Слідчий не помилився.')}
+ else{
+  bad.push(w.m.map(p=>`${p.x} — ${T[p.t][0]}`).join(', ')+(ze?', закінчення нульове':'')+`. Слово: ${w.s.replace(/\|/g,'')}`);
+  fbk(false,'Є помилки. Правильний розбір:',ans(w,ze));
+ }
+ $('#chk').textContent=nxt();
+}
+
+function pick(b,v){
+ if(done)return;done=true;
+ const it=items[idx],ok=v==it.a;
+ document.querySelectorAll('#stage .opt').forEach(x=>{if(x.textContent==it.a)x.classList.add('ok');else if(x==b)x.classList.add('bad');x.disabled=true});
+ if(ok){sc[lv]++;fbk(true,it.q=='r'?`Правильно! Корінь — «${it.a}».`:`Правильно! Слово «${it.a}» не споріднене з іншими.`)}
+ else{
+  bad.push(it.q=='r'?`Корінь у словах «${it.ws.join(', ')}» — ${it.a}.`:`Зайве слово — «${it.a}». Споріднені слова: ${it.rel.join(', ')}.`);
+  fbk(false,it.q=='r'?`Не зовсім. Спільна частина всіх слів — «${it.a}».`:`Не зовсім. Зайве слово — «${it.a}», бо воно має інший корінь.`);
+ }
+ $('#chk').hidden=false;$('#chk').textContent=nxt();
+}
+
+function fin(){
+ lv=4;train();
+ $('#play').hidden=true;const e=$('#end');e.hidden=false;
+ const tot=sc.reduce((a,b)=>a+b,0),pct=tot/24;
+ const n=pct>=.9?3:pct>=.65?2:1;
+ const msg=n==3?'Головний детектив потягу! Жоден суфікс не втік від тебе.':n==2?'Досвідчений слідчий. Ще трохи — і ти майстер!':'Юний слідчий. Повтори порядок розбору й спробуй ще раз!';
+ e.innerHTML=`<h2>Розслідування завершено!</h2><div class="big">${tot} з 24</div><div class="stars">${'★'.repeat(n)+'☆'.repeat(3-n)}</div><p style="text-align:center;font-weight:700">${msg}</p>`
+ +LV.map((L,i)=>`<div class="lr"><span>${i+1}. ${L.n}</span><div class="bar"><i style="width:${sc[i]/6*100}%"></i></div><b>${sc[i]}/6</b></div>`).join('')
+ +(bad.length?`<h3>Над чим ще попрацювати</h3><ul>${bad.map(x=>`<li class="m">${x}</li>`).join('')}</ul>`:'<p>Жодної помилки — відмінно!</p>')
+ +'<div class="row"><button class="go" id="again">Грати знову (нові слова)</button></div>';
+ $('#again').onclick=start;
+}
+
+$('#hint').innerHTML='<ol class="steps">'+document.querySelector('.steps').innerHTML+'</ol>';
+$('#hintb').onclick=()=>$('#hint').hidden=!$('#hint').hidden;
+$('#chk').onclick=()=>{if(!done)check();else{idx++;show()}};
+$('#go').onclick=start;
+</script>
+</body>
+</html>
