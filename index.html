@@ -4,93 +4,158 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Будова слова: потяг-детектив</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Rubik:wght@500;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--ink:#2b3a55;--ok:#43b85a;--okbg:#dff6e3;--bad:#e5484d;--badbg:#fde4e4;--E:#f6cf4a;--B:#f4a259;--R:#ef7b6c;--P:#b79ae0;--S:#4fb8ad}
+:root{
+  --ink:#26334d;--muted:#5d6b85;--line:#d3dcea;
+  --ok:#3fb35a;--okd:#2a8a43;--okbg:#e3f7e7;
+  --bad:#e04848;--badd:#a83232;--badbg:#fde6e6;
+  --blue:#2f5fd8;--blue2:#1f43a3;
+}
 *{box-sizing:border-box}
 [hidden]{display:none!important}
-body{margin:0;min-height:100vh;font-family:"Trebuchet MS","Segoe UI",system-ui,sans-serif;color:var(--ink);background:linear-gradient(#d8eefc,#f4fbf0)}
-main{max-width:760px;margin:0 auto;padding:14px}
-h1{font-size:clamp(22px,5.5vw,34px);margin:8px 0 2px;text-align:center}
-h2{margin:4px 0 8px}
-.sub{text-align:center;margin:0 0 10px}
-.card{background:#fff;border-radius:18px;padding:16px;box-shadow:0 4px 0 #cfdbea;margin-top:10px}
-.train{display:flex;gap:6px;margin-top:10px}
-.wg{flex:1;border-radius:12px 12px 4px 4px;padding:7px 3px;text-align:center;font-size:12px;font-weight:700;background:#e3e9f2;color:#7a869c;border-bottom:6px solid #b8c2d4}
-.wg.cur{background:var(--c);color:var(--ink);border-bottom-color:rgba(0,0,0,.25);transform:translateY(-3px)}
-.wg.done{background:var(--c);color:var(--ink);opacity:.75;border-bottom-color:rgba(0,0,0,.2)}
-.steps{list-style:none;padding:0;margin:8px 0}
-.steps li{display:flex;gap:9px;margin:7px 0;line-height:1.35}
-.steps i{flex:none;width:15px;height:15px;border-radius:4px;margin-top:3px}
-button{font-family:inherit;color:var(--ink);cursor:pointer}
-button:focus-visible{outline:3px solid #2b6cdf;outline-offset:2px}
-.go{background:#2f6fe4;color:#fff;border:0;border-radius:14px;padding:12px 22px;font-size:17px;font-weight:700;box-shadow:0 4px 0 #1d4aa3}
-.ghost{background:#fff;border:2px solid #c7d2e4;border-radius:14px;padding:10px 16px;font-size:15px;font-weight:700}
-.row{display:flex;gap:10px;justify-content:space-between;margin-top:14px;flex-wrap:wrap}
-.lvl{font-weight:700;font-size:15px;color:#5a6b8c}
-#task{font-size:17px;line-height:1.4;margin:6px 0}
-.word{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;margin:14px 0}
-.tile{display:inline-flex;align-items:center;justify-content:center;width:clamp(32px,9vw,50px);height:clamp(40px,11vw,58px);font-family:inherit;font-weight:800;font-size:clamp(18px,5.4vw,28px);text-transform:uppercase;border:0;border-radius:8px;background:#f5dcaa;border-bottom:5px solid #cfa55f;color:#5a3d12}
-button.tile{cursor:pointer}
-.tile.p{border-bottom-color:rgba(0,0,0,.25);color:var(--ink)}
-.tile.ok{background:var(--ok)!important;color:#fff;border-bottom-color:#2d8a41}
-.tile.bad{background:var(--bad)!important;color:#fff;border-bottom-color:#a82b30}
-#tools{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
-.tool{display:inline-flex;gap:7px;align-items:center;background:#fff;border:2px solid #c7d2e4;border-radius:12px;padding:8px 12px;font-weight:700;font-size:15px}
-.tool.on{border-color:var(--ink);background:#f1f5fb}
-.tool.ok{background:var(--okbg);border-color:var(--ok)}
-.tool.bad{background:var(--badbg);border-color:var(--bad)}
-.dot{width:14px;height:14px;border-radius:4px}
-.chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:12px 0}
-.chip{background:#f1f5fb;border-radius:12px;padding:8px 14px;font-size:18px;font-weight:700}
-.opts{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:12px 0}
-.opt{min-width:92px;background:#fff;border:2px solid #c7d2e4;border-radius:14px;padding:12px 18px;font-size:20px;font-weight:700;box-shadow:0 3px 0 #d5dbe6}
-.opt.ok{background:var(--ok);border-color:#2d8a41;color:#fff;opacity:1}
-.opt.bad{background:var(--bad);border-color:#a82b30;color:#fff;opacity:1}
-.fb{border-radius:14px;padding:10px 14px;margin-top:14px;font-weight:700}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;min-height:100vh;font-family:Nunito,"Segoe UI",system-ui,sans-serif;color:var(--ink);
+  background:#eef7ff linear-gradient(180deg,#cfeaff 0,#eaf6ff 280px,#f3faec 100%)}
+main{max-width:800px;margin:0 auto;padding:14px 14px 48px}
+h1,h2,h3{font-family:Rubik,Nunito,sans-serif}
+h1{font-size:clamp(26px,6.4vw,40px);font-weight:800;margin:4px 0 2px;text-align:center}
+.sub{text-align:center;margin:0 0 12px;color:var(--muted);font-weight:700}
+h2{font-size:22px;margin:0 0 10px}
+h3{font-size:18px;margin:18px 0 8px}
+p{line-height:1.45}
+
+/* train */
+.train{display:flex;align-items:flex-end;gap:8px;padding-top:8px}
+.loco{flex:none;width:66px;height:62px;margin-bottom:2px}
+.wagon{flex:1;position:relative;min-height:54px;margin-bottom:18px;border-radius:12px 12px 6px 6px;
+  background:#dfe6f0;color:#7d8aa3;border-bottom:6px solid rgba(0,0,0,.13);
+  display:flex;align-items:center;justify-content:center;gap:7px;padding:4px 6px;
+  font:700 13px/1.1 Rubik,sans-serif;text-align:center;transition:transform .25s}
+.wagon::before,.wagon::after{content:"";position:absolute;bottom:-18px;width:18px;height:18px;border-radius:50%;
+  background:#9aa6bd;box-shadow:inset 0 0 0 5px #3a4560}
+.wagon::before{left:15%}.wagon::after{right:15%}
+.wagon .no{flex:none;width:24px;height:24px;border-radius:50%;background:rgba(255,255,255,.75);
+  display:grid;place-items:center;font-size:13px}
+.wagon.on,.wagon.done{background:var(--c);color:var(--ink)}
+.wagon.on{transform:translateY(-5px);box-shadow:0 0 0 3px #fff,0 0 0 6px var(--c)}
+.wagon.done .no{background:#fff;color:var(--okd)}
+.rails{height:12px;margin-top:-2px;
+  background:linear-gradient(#7b5a3a,#7b5a3a) 0 0/100% 3px no-repeat,
+             repeating-linear-gradient(90deg,#b8946b 0 7px,transparent 7px 22px) 0 3px/100% 9px no-repeat}
+@media(max-width:560px){.wagon .nm{display:none}.loco{width:54px;height:51px}}
+
+.card{background:#fff;border-radius:24px;padding:20px;margin-top:16px;
+  box-shadow:0 6px 0 #c9d8ec,0 14px 30px rgba(38,51,77,.07)}
+@media(max-width:480px){.card{padding:16px 10px;border-radius:20px}main{padding:10px 8px 40px}}
+
+/* steps legend */
+.steps{list-style:none;padding:0;margin:10px 0;display:grid;gap:8px}
+.steps li{display:grid;grid-template-columns:40px 1fr;gap:10px;align-items:start;line-height:1.4}
+.steps.compact li{gap:6px;font-size:15px}
+
+.demo{display:flex;justify-content:center;margin:6px 0 2px;cursor:pointer}
+.demo-cap{text-align:center;color:var(--muted);font-size:14px;margin:0 0 6px}
+
+/* buttons */
+button{font-family:inherit;color:inherit;cursor:pointer}
+button:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+.btn{font:800 17px Rubik,sans-serif;border:0;border-radius:16px;padding:13px 24px;transition:transform .08s}
+.btn:active{transform:translateY(3px)}
+.primary{background:var(--blue);color:#fff;box-shadow:0 5px 0 var(--blue2)}
+.primary:active{box-shadow:0 2px 0 var(--blue2)}
+.soft{background:#eef3fa;color:var(--ink);box-shadow:0 4px 0 #cfd9e8;font-size:15px;padding:11px 16px}
+.soft:active{box-shadow:0 1px 0 #cfd9e8}
+.row{display:flex;gap:10px;align-items:center;margin-top:16px;flex-wrap:wrap}
+.row .sp{flex:1}
+
+/* play */
+.head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.lvl{font:700 15px Rubik,sans-serif;color:var(--muted)}
+.dots{display:flex;gap:6px}
+.dots i{width:13px;height:13px;border-radius:50%;background:#dfe6f0}
+.dots i.cur{box-shadow:0 0 0 3px #fff,0 0 0 5px #9fb0cc}
+.dots i.ok{background:var(--ok)}.dots i.bad{background:var(--bad)}
+.task{font-size:18px;font-weight:700;margin:10px 0 4px;line-height:1.4}
+.tools{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:12px}
+.tool{display:inline-flex;align-items:center;gap:7px;border:2px solid var(--line);background:#fff;border-radius:14px;
+  padding:7px 13px 7px 8px;font:800 15px Nunito,sans-serif;color:var(--ink)}
+.tool.on{border-color:var(--c);background:var(--f);box-shadow:0 0 0 2px var(--c) inset}
+.howto{text-align:center;color:var(--muted);font-size:14px;margin:8px 0 0}
+.board{display:flex;justify-content:center;margin:18px 0 6px}
+.board svg.w{touch-action:none;-webkit-user-select:none;user-select:none;cursor:pointer}
+svg.w{width:100%;height:auto;display:block}
+svg.w text{font:800 26px Rubik,sans-serif;pointer-events:none}
+svg.w .lock{cursor:default}
+.anim .mk path{stroke-dasharray:1;stroke-dashoffset:1;animation:draw .7s ease-out var(--d) forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+@media(prefers-reduced-motion:reduce){.anim .mk path{animation:none;stroke-dashoffset:0}.wagon{transition:none}}
+
+.chips{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:16px 0 6px}
+.chip{background:#f8e2b5;color:#5b3a10;border-radius:12px;padding:9px 16px;font:700 20px Rubik,sans-serif;box-shadow:0 4px 0 #d8a457}
+.opts{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:18px 0 6px}
+.opt{min-width:96px;background:#fff;border:2px solid var(--line);border-radius:16px;padding:12px 18px;
+  font:700 21px Rubik,sans-serif;box-shadow:0 4px 0 #d5dde9;color:var(--ink)}
+.opt.ok{background:var(--ok);border-color:var(--okd);color:#fff;box-shadow:0 4px 0 var(--okd)}
+.opt.bad{background:var(--bad);border-color:var(--badd);color:#fff;box-shadow:0 4px 0 var(--badd)}
+.opt:disabled{cursor:default}
+
+.fb{border-radius:16px;padding:12px 14px;margin-top:16px}
 .fb.ok{background:var(--okbg);border:2px solid var(--ok)}
 .fb.bad{background:var(--badbg);border:2px solid var(--bad)}
-.ans{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:10px 0 2px}
-.g{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:12px;font-weight:400}
-.g div{display:flex;gap:2px}
-.g .tile{width:30px;height:36px;font-size:16px;border-bottom-width:3px}
-#hint{background:#f1f5fb;border-radius:14px;padding:6px 14px;margin-top:12px}
-.big{font-size:46px;font-weight:800;text-align:center}
-.stars{text-align:center;font-size:34px;color:#f0b429;letter-spacing:4px}
-.lr{display:grid;grid-template-columns:150px 1fr 40px;gap:8px;align-items:center;margin:8px 0;font-size:15px}
-.bar{height:14px;background:#e3e9f2;border-radius:8px;overflow:hidden}
-.bar i{display:block;height:100%;background:var(--ok)}
-li.m{margin:8px 0;line-height:1.4}
-@media(max-width:480px){.lr{grid-template-columns:110px 1fr 36px;font-size:13px}.wg{font-size:11px}}
+.fb .t{font:800 17px Rubik,sans-serif;margin:0}
+.fb .scheme{display:flex;justify-content:center;margin:10px 0 2px}
+.fb ul{margin:8px 0 0;padding-left:20px}.fb li{margin:4px 0;line-height:1.4}
+.fam{display:flex;flex-wrap:wrap;gap:4px 14px;justify-content:center;margin-top:8px}
+.fam svg.w{width:auto;max-width:100%}
+.note{margin:8px 0 0;font-weight:700}
+.hint{background:#f1f6fd;border-radius:16px;padding:10px 14px;margin-top:14px}
+.hint .wh{margin:8px 0 2px;font-weight:800}
+
+/* end */
+.big{font:800 52px Rubik,sans-serif;text-align:center;margin:6px 0 0}
+.stars{display:flex;justify-content:center;gap:6px;margin:6px 0}
+.msg{text-align:center;font-weight:800;font-size:18px;margin:6px 0 14px}
+.lr{display:grid;grid-template-columns:minmax(120px,190px) 1fr 44px;gap:10px;align-items:center;margin:9px 0;font-weight:700}
+.bar{height:16px;background:#e7edf5;border-radius:9px;overflow:hidden}
+.bar i{display:block;height:100%;border-radius:9px}
+.mist{list-style:none;padding:0;margin:0;display:grid;gap:10px}
+.mist li{background:#f7f9fc;border-radius:14px;padding:10px 12px;line-height:1.4}
+.mist .fam{justify-content:flex-start}
+@media(max-width:480px){.lr{grid-template-columns:96px 1fr 38px;font-size:14px}}
 </style>
 </head>
 <body>
 <main>
-<h1>Будова слова: потяг-детектив</h1>
-<p class="sub">Розбирай слова, як справжній слідчий!</p>
-<div class="train" id="train" hidden></div>
+<h1>Будова слова</h1>
+<p class="sub">Потяг-детектив: розбери слово, як справжній слідчий</p>
+
+<div id="train" class="train"></div>
+<div class="rails"></div>
 
 <section class="card" id="start">
-<h2>Вирушаємо в розслідування!</h2>
-<p>Порядок розбору слова за будовою:</p>
-<ol class="steps">
-<li><i style="background:var(--E)"></i><span><b>Закінчення</b> — змінна частина слова. Знаходимо її першою: змінюємо форму слова.</span></li>
-<li><i style="background:var(--B)"></i><span><b>Основа</b> — уся частина слова без закінчення.</span></li>
-<li><i style="background:var(--R)"></i><span><b>Корінь</b> — спільна частина спільнокореневих слів (добираємо їх з інших частин мови).</span></li>
-<li><i style="background:var(--P)"></i><span><b>Префікс</b> — стоїть перед коренем.</span></li>
-<li><i style="background:var(--S)"></i><span><b>Суфікс</b> — стоїть після кореня, перед закінченням.</span></li>
-</ol>
-<p>4 рівні, у кожному — нові слова. Правильні відповіді підсвічуються зеленим, помилки — червоним. Наприкінці буде підсумок.</p>
-<button class="go" id="go">Почати</button>
+  <h2>Як розбирати слово за будовою</h2>
+  <div class="demo" id="demo" title="Показати ще раз"></div>
+  <p class="demo-cap">Так розібрано слово «підводний». Торкнися слова, щоб побачити ще раз.</p>
+  <ol class="steps" id="steps"></ol>
+  <p>У грі 4 рівні по 6 завдань, і щоразу слова нові. Правильні відповіді підсвічуються зеленим, помилки — червоним. Наприкінці буде підсумок.</p>
+  <div class="row"><button class="btn primary" id="go">Вирушаємо!</button></div>
 </section>
 
 <section class="card" id="play" hidden>
-<div class="lvl" id="lvl"></div>
-<p id="task"></p>
-<div id="stage"></div>
-<div id="tools"></div>
-<div class="fb" id="fb" hidden></div>
-<div id="hint" hidden></div>
-<div class="row"><button class="ghost" id="hintb">Підказка</button><button class="go" id="chk">Перевірити</button></div>
+  <div class="head"><div class="lvl" id="lvl"></div><div class="dots" id="dots"></div></div>
+  <p class="task" id="task"></p>
+  <div id="stage"></div>
+  <div id="fb"></div>
+  <div class="hint" id="hint" hidden></div>
+  <div class="row">
+    <button class="btn soft" id="hintb">Підказка</button>
+    <button class="btn soft" id="clr">Стерти позначки</button>
+    <span class="sp"></span>
+    <button class="btn primary" id="chk">Перевірити</button>
+  </div>
 </section>
 
 <section class="card" id="end" hidden></section>
@@ -98,145 +163,290 @@ li.m{margin:8px 0;line-height:1.4}
 
 <script>
 const $=s=>document.querySelector(s);
-const h=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e};
 const sh=a=>a.map(x=>[Math.random(),x]).sort((p,q)=>p[0]-q[0]).map(x=>x[1]);
-const cap=s=>s[0].toUpperCase()+s.slice(1);
-const T={P:['префікс'],R:['корінь'],S:['суфікс'],E:['закінчення'],B:['основа']};
-const SYM={E:'□',R:'⌒',P:'⌐',S:'∧'};
 
+/* ---------- частини слова ---------- */
+const NAME={E:'Закінчення',B:'Основа',R:'Корінь',P:'Префікс',S:'Суфікс'};
+const STROKE={E:'#d39200',B:'#e2741d',R:'#d93f3f',P:'#7a4fd0',S:'#11887b'};
+const FILL={E:'#fff0b3',B:'#ffe6cf',R:'#ffdcd6',P:'#ebe0ff',S:'#cff2ec'};
+const SHADE={E:'#e6c35a',R:'#e9a39a',P:'#b9a2e6',S:'#86cfc4'};
+const IP={E:'M6 5H28V19H6Z',B:'M5 6V17H29V6',R:'M5 18Q17 -4 29 18',P:'M5 7H28V19',S:'M5 19L17 5L29 19'};
+const icon=t=>`<svg viewBox="0 0 34 24" width="34" height="24" aria-hidden="true"><path d="${IP[t]}" fill="none" stroke="${STROKE[t]}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+const STEPS=[
+ ['E','змінна частина слова. Змінюємо форму слова (книга — книги — книгою) і дивимося, що змінилося. Якщо в цій формі закінчення немає, а в інших воно з’являється (ліс — лісу), закінчення нульове.'],
+ ['B','усе слово без закінчення.'],
+ ['R','спільна частина слів-родичів. Добираємо спільнокореневі слова з інших частин мови.'],
+ ['P','стоїть перед коренем.'],
+ ['S','стоїть після кореня, перед закінченням. Допомагає творити нові слова.']];
+const stepsHTML=()=>STEPS.map(([t,x])=>`<li>${icon(t)}<span><b>${NAME[t]}</b> — ${x}</span></li>`).join('');
+const TIPS={
+ E:'Закінчення — змінна частина. Зміни форму слова й подивись, що змінилося.',
+ Z:'Якщо в цій формі закінчення немає, а в інших воно з’являється (ліс — лісу), — закінчення нульове: познач порожню клітинку.',
+ B:'Основа — це все слово без закінчення.',
+ R:'Корінь — спільна частина слів-родичів.',
+ P:'Префікс стоїть перед коренем.',
+ S:'Суфікс стоїть після кореня, перед закінченням.'};
+
+/* ---------- малювання слова ---------- */
+const CW=38,PT=44,PAD=8,TOP=40,TH=50;
+function runs(a){const r=[];let i=0;while(i<a.length){if(!a[i]){i++;continue}let j=i;while(j+1<a.length&&a[j+1]===a[i])j++;r.push([a[i],i,j]);i=j+1}return r}
+function markPath(t,x0,x1,bot){const m=(x0+x1)/2;switch(t){
+ case 'E':return `M${x0-4} ${TOP-4}H${x1+4}V${TOP+TH+8}H${x0-4}Z`;
+ case 'R':return `M${x0+3} ${TOP-5}Q${m} ${TOP-38} ${x1-3} ${TOP-5}`;
+ case 'P':return `M${x0+3} ${TOP-14}H${x1-3}V${TOP-3}`;
+ case 'S':return `M${x0+3} ${TOP-5}L${m} ${TOP-28}L${x1-3} ${TOP-5}`;
+ case 'B':return `M${x0+3} ${bot+6}V${bot+19}H${x1-3}V${bot+6}`;}}
+const ORD={E:0,B:1,R:2,P:3,S:4};
+function wordSVG(L,o={}){
+  const n=L.length,bot=TOP+TH+4,lastR=PAD+(n-1)*PT+CW,zx=lastR+10;
+  const W=(o.zero?zx+CW:lastR)+PAD,H=bot+(o.base?26:8);
+  const sc=o.mini?.55:1.15;
+  let s=`<svg class="w${o.anim?' anim':''}" viewBox="0 0 ${W} ${H}" style="max-width:${Math.round(W*sc)}px" role="img" aria-label="${L.map(l=>l.ch).join('')}">`;
+  L.forEach((l,i)=>{const x=PAD+i*PT;
+    const f=l.st==='ok'?'#3fb35a':l.st==='bad'?'#e04848':l.t?FILL[l.t]:'#f8e2b5';
+    const d=l.st==='ok'?'#2a8a43':l.st==='bad'?'#a83232':l.t?SHADE[l.t]:'#d8a457';
+    s+=`<g class="tile${l.lock?' lock':''}" data-i="${i}"><rect x="${x}" y="${TOP+4}" width="${CW}" height="${TH}" rx="8" fill="${d}"/><rect x="${x}" y="${TOP}" width="${CW}" height="${TH}" rx="8" fill="${f}"/><text x="${x+CW/2}" y="${TOP+TH/2+9}" text-anchor="middle" fill="${l.st?'#fff':'#5b3a10'}">${l.ch.toUpperCase()}</text></g>`;
+  });
+  if(o.zero){const z=o.zero,f=z.st==='ok'?'#e3f7e7':z.st==='bad'?'#fde6e6':'#fff';
+    const st=z.on?'none':(z.st==='bad'?'#e04848':'#a9b6cc');
+    s+=`<g data-z="1" class="${z.lock?'lock':''}"><rect x="${zx}" y="${TOP}" width="${CW}" height="${TH+4}" rx="8" fill="${f}" stroke="${st}" stroke-width="2" stroke-dasharray="5 5"/></g>`;}
+  const mk=(t,x0,x1)=>`<g class="mk" stroke="${STROKE[t]}" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round" style="--d:${ORD[t]*.7+.3}s" pointer-events="none"><path pathLength="1" d="${markPath(t,x0,x1,bot)}"/></g>`;
+  runs(L.map(l=>l.t)).forEach(([t,a,b])=>s+=mk(t,PAD+a*PT,PAD+b*PT+CW));
+  if(o.zero&&o.zero.on)s+=mk('E',zx,zx+CW);
+  if(o.base)runs(L.map(l=>l.b?'B':'')).forEach(([,a,b])=>s+=mk('B',PAD+a*PT,PAD+b*PT+CW));
+  return s+'</svg>';
+}
+function parse(str){
+  const [body,h]=str.split('|');
+  const m=body.split(' ').map(x=>{const k=x.indexOf('-');return{t:x.slice(0,k),x:x.slice(k+1)}});
+  const L=[];m.forEach(p=>[...p.x].forEach(ch=>L.push({ch,t:p.t})));
+  return{L,h,z:!m.some(p=>p.t==='E'),word:m.map(p=>p.x).join('')};
+}
+function rootWord(w,root){const k=w.indexOf(root);return wordSVG([...w].map((ch,i)=>({ch,t:i>=k&&i<k+root.length?'R':''})),{mini:true})}
+
+/* ---------- завдання ---------- */
 const LV=[
-{n:'Закінчення',c:'E',k:'t',tools:['E'],
- t:'Знайди закінчення: познач букви, які змінюються, коли змінюємо форму слова (книга — книги). Якщо закінчення немає, натисни «Нульове закінчення».',
- pool:['B-книг E-а','B-ліс','B-діт E-ям','B-зелен E-ий','B-вікн E-о','B-мор E-ем','B-сонц E-е','B-будинок','B-квіт E-ами','B-веснян E-ий','B-чита E-ю']},
-{n:'Корінь',c:'R',k:'q'},
-{n:'Префікс і суфікс',c:'P',k:'t',tools:['P','S'],
- t:'Познач префікс (стоїть перед коренем) і суфікс (після кореня). Корінь і закінчення позначати не треба.',
- pool:['P-пере R-хід','R-ліс S-ник','P-при R-їзд','R-чит S-ач','R-казк S-ов E-ий','P-за R-пис S-к E-а','P-роз R-мов E-а','R-зим S-ов E-ий']},
-{n:'Повний розбір',c:'S',k:'t',tools:['P','R','S','E'],
- t:'Розбери слово за будовою: познач усі частини. Не забудь про нульове закінчення!',
- pool:['P-під R-вод S-н E-ий','P-без R-хмар S-н E-ий','P-при R-мор S-ськ E-ий','P-без R-сон S-н E-ий','R-весн S-ян E-ий','P-пере R-ліс S-ок','P-від R-літ','P-під R-пис S-к E-а']}
+{n:'Закінчення та основа',c:'#f6c945',k:'w',tools:['E','B'],
+ t:'Зміни форму слова й подивись, що змінюється. Познач закінчення, а потім основу — усе слово без закінчення.',
+ pool:['X-книг E-а|книги, книгою','X-ліс|лісу, лісом','X-діт E-ям|діти, дітьми','X-зелен E-ий|зелена, зелене',
+  'X-вікн E-о|вікна, вікном','X-мор E-ем|море, моря','X-сонц E-е|сонця, сонцем','X-будинок|будинку, будинком',
+  'X-квіт E-ами|квіти, квітів','X-веснян E-ий|весняна, весняне','X-чита E-ю|читаєш, читає','X-земл E-ею|земля, землі',
+  'X-дощ|дощу, дощем','X-рук E-ою|рука, руки']},
+{n:'Слова-родичі',c:'#f08a7a',k:'q'},
+{n:'Префікс і суфікс',c:'#ad90ea',k:'w',tools:['P','S'],pre:['R','E'],
+ t:'Корінь і закінчення вже позначено. Знайди префікс і суфікс. Будь уважним: у слові може не бути префікса або суфікса!',
+ pool:['P-пере R-хід','R-ліс S-ник','P-при R-їзд','R-чит S-ач','R-казк S-ов E-ий','P-за R-пис S-к E-а','P-роз R-мов E-а',
+  'R-зим S-ов E-ий','P-під R-сніж S-ник','R-дуб S-ок','P-пере R-каз','P-за R-біг']},
+{n:'Повний розбір',c:'#55bfb3',k:'w',tools:['E','B','R','P','S'],
+ t:'Розбери слово за будовою за порядком: закінчення, основа, корінь, префікс, суфікс.',
+ pool:['P-під R-вод S-н E-ий|Родичі: вода, водний. Форми: підводна, підводне.',
+  'P-без R-хмар S-н E-ий|Родичі: хмара, хмарка. Форми: безхмарна, безхмарне.',
+  'P-при R-мор S-ськ E-ий|Родичі: море, моряк. Форми: приморська, приморське.',
+  'P-без R-сон S-н E-ий|Родичі: сон, сонний. Форми: безсонна, безсонне.',
+  'R-весн S-ян E-ий|Родичі: весна, навесні. Форми: весняна, весняне.',
+  'P-пере R-ліс S-ок|Родичі: ліс, лісник. Форми: переліски, перелісками.',
+  'P-до R-пис|Родичі: писати, запис. Форми: допису, дописом.',
+  'P-під R-пис S-к E-а|Родичі: писати, запис. Форми: підписки, підпискою.',
+  'P-за R-річ S-н E-ий|Родичі: річка, річковий. Форми: зарічна, зарічне.',
+  'P-по R-сад S-к E-а|Родичі: сад, садити. Форми: посадки, посадкою.',
+  'R-сніг S-ов E-ий|Родичі: сніг, сніговик. Форми: снігова, снігове.',
+  'P-за R-хід|Родичі: ходити, вихід. Форми: заходу, заходом.']}
 ];
 const RT=[
-[['ліс','лісок','лісовий','лісник'],'ліс',['ліс','лісов','ник','лі']],
-[['вода','водяний','підводний','водій'],'вод',['вод','вода','підвод','ій']],
-[['сад','садок','садівник','садовий'],'сад',['сад','садів','ник','са']],
-[['хліб','хлібний','хлібина','хлібниця'],'хліб',['хліб','хлібн','ина','хлі']],
-[['море','морський','моряк','приморський'],'мор',['мор','море','морськ','при']],
-[['квітка','квітник','квітковий','квіти'],'квіт',['квіт','квітк','ник','кові']]];
+ {ws:['ліс','лісок','лісовий','лісник'],a:'ліс',o:['ліс','лісов','ник','лі']},
+ {ws:['вода','водяний','підводний','водичка'],a:'вод',o:['вод','вода','підвод','во']},
+ {ws:['сад','садок','садівник','садовий'],a:'сад',o:['сад','садів','ок','са']},
+ {ws:['хліб','хлібний','хлібина','хлібниця'],a:'хліб',o:['хліб','хлібн','ина','хлі']},
+ {ws:['море','морський','моряк','приморський'],a:'мор',o:['мор','море','морськ','при']},
+ {ws:['квітка','квітник','квітковий','квіти'],a:'квіт',o:['квіт','квітк','ник','кві']},
+ {ws:['дуб','дубок','дубовий','дубочок'],a:'дуб',o:['дуб','дубов','ок','ду']},
+ {ws:['зелень','зелений','зеленіти','зеленка'],a:'зелен',o:['зелен','зел','зелені','ен']}];
 const OD=[
-[['зима','зимовий','зимувати'],'зірка'],
-[['рука','ручний','рукавиця'],'ріка'],
-[['вода','водяний','водій'],'ворона'],
-[['ліс','лісник','лісовий'],'лист'],
-[['сад','садівник','садок'],'сало'],
-[['мороз','морозний','морозиво'],'море']];
+ {rel:['вода','водяний','водичка'],root:'вод',a:'водій',note:'«Водій» походить від слова «водити», а не від «вода».'},
+ {rel:['ліс','лісник','лісовий'],root:'ліс',a:'лисиця',note:'У слові «лисиця» корінь «лис», а не «ліс».'},
+ {rel:['мороз','морозний','морозиво'],root:'мороз',a:'море',note:'У слові «море» корінь «мор» — це зовсім інше значення.'},
+ {rel:['хліб','хлібний','хлібина'],root:'хліб',a:'хлів',note:'«Хлів» — приміщення для тварин, у нього інший корінь.'},
+ {rel:['зима','зимовий','зимувати'],root:'зим',a:'зірка',note:'У слові «зірка» корінь «зір», він не пов’язаний із зимою.'},
+ {rel:['сад','садок','садовий'],root:'сад',a:'сало',note:'У слові «сало» корінь «сал», а не «сад».'},
+ {rel:['риба','рибка','рибалка'],root:'риб',a:'рись',note:'«Рись» — лісова тварина, у цього слова інший корінь.'}];
 
-let lv,items,idx,sc,bad,done,sel,zero,act,cur,tiles,zb;
+/* ---------- стан ---------- */
+let lv=-1,items,idx,sc,res,mist,done,act,St,Z,cur,showZ,hasB;
+const board=()=>$('#board');
 
-const parse=s=>{const m=s.split(' ').map(x=>{const[t,w]=x.split('-');return{t,x:w}});const L=[];m.forEach(p=>[...p.x].forEach(ch=>L.push({ch,t:p.t})));return{m,L,s:m.map(p=>p.x).join('|')}};
+function trainHTML(cl){
+  const loco=`<svg class="loco" viewBox="0 0 66 62" aria-hidden="true"><rect x="2" y="44" width="60" height="5" rx="2" fill="#26334d"/><rect x="6" y="24" width="38" height="22" rx="6" fill="#2f5fd8"/><rect x="34" y="8" width="26" height="38" rx="5" fill="#2449b0"/><rect x="39" y="14" width="16" height="12" rx="3" fill="#d6ecff"/><rect x="12" y="10" width="10" height="16" rx="2" fill="#2449b0"/><rect x="9" y="6" width="16" height="6" rx="3" fill="#26334d"/><circle cx="17" cy="52" r="9" fill="#3a4560"/><circle cx="17" cy="52" r="3.5" fill="#9aa6bd"/><circle cx="45" cy="52" r="9" fill="#3a4560"/><circle cx="45" cy="52" r="3.5" fill="#9aa6bd"/><circle cx="8" cy="34" r="3" fill="#ffe27a"/></svg>`;
+  return loco+LV.map((L,i)=>{const c=cl?cl(i):'';return `<div class="wagon ${c}" style="--c:${L.c}"><span class="no">${c==='done'?'✓':i+1}</span><span class="nm">${L.n}</span></div>`}).join('');
+}
+function setTrain(){$('#train').innerHTML=trainHTML(i=>lv>i?'done':lv===i?'on':'')}
+function showSec(id){['start','play','end'].forEach(s=>$('#'+s).hidden=s!==id);window.scrollTo({top:0,behavior:'smooth'})}
 
-function mk(i){
- if(i==1)return sh([
-  ...sh(RT).slice(0,3).map(r=>({q:'r',ws:r[0],o:sh(r[2]),a:r[1]})),
-  ...sh(OD).slice(0,3).map(r=>({q:'o',ws:sh([...r[0],r[1]]),a:r[1],rel:r[0]}))]);
- return sh(LV[i].pool).slice(0,6);
+function start(){sc=[0,0,0,0];res=[[],[],[],[]];mist=[];showSec('play');go(0)}
+function go(i){lv=i;idx=0;const L=LV[i];
+  items=L.k==='q'
+    ?sh([...sh(RT).slice(0,3).map(r=>({q:'r',...r,o:sh(r.o)})),...sh(OD).slice(0,3).map(r=>({q:'o',...r,o:sh([...r.rel,r.a])}))])
+    :sh(L.pool).slice(0,6);
+  next();}
+function head(){
+  setTrain();
+  $('#lvl').textContent=`Рівень ${lv+1} з 4. ${LV[lv].n}`;
+  $('#dots').innerHTML=Array.from({length:6},(_,i)=>`<i class="${i<res[lv].length?(res[lv][i]?'ok':'bad'):i===idx?'cur':''}"></i>`).join('');
+}
+function next(){
+  if(idx>=items.length){lv<3?go(lv+1):finish();return}
+  done=false;head();
+  $('#fb').innerHTML='';$('#hint').hidden=true;
+  $('#chk').textContent='Перевірити';
+  LV[lv].k==='q'?quizItem(items[idx]):wordItem(items[idx]);
+}
+const nextLabel=()=>lv===3&&idx===items.length-1?'Подивитися результат':'Далі';
+
+/* ---------- рівні з розбором слова ---------- */
+function wordItem(s){
+  const L=LV[lv],pre=L.pre||[];
+  cur=parse(s);
+  St=cur.L.map(l=>{const p=pre.includes(l.t);return{ch:l.ch,t:p?l.t:'',b:false,lock:p,st:''}});
+  Z={on:pre.includes('E')&&cur.z,lock:pre.includes('E'),st:''};
+  showZ=L.tools.includes('E')||(pre.includes('E')&&cur.z);
+  hasB=L.tools.includes('B');
+  act=L.tools[0];
+  $('#task').textContent=L.t;
+  $('#clr').hidden=false;$('#chk').hidden=false;
+  $('#stage').innerHTML=`<div class="tools" id="tools">${L.tools.map(t=>`<button class="tool" data-t="${t}" style="--c:${STROKE[t]};--f:${FILL[t]}">${icon(t)}${NAME[t]}</button>`).join('')}</div>
+   <p class="howto">Обери знак, а потім торкнися букв або проведи по них пальцем.${L.tools.includes('E')?' Нульове закінчення — торкнися порожньої клітинки в кінці слова.':''}</p>
+   <div class="board" id="board"></div>`;
+  $('#tools').onclick=e=>{const b=e.target.closest('.tool');if(!b||done)return;act=b.dataset.t;tools()};
+  bindBoard();tools();draw();
+}
+function tools(){document.querySelectorAll('#tools .tool').forEach(b=>b.classList.toggle('on',b.dataset.t===act))}
+function draw(){board().innerHTML=wordSVG(St,{zero:showZ?Z:null,base:hasB})}
+
+let painting=false,mode=null;
+function bindBoard(){
+  const bd=board();
+  bd.addEventListener('pointerdown',e=>{
+    if(done)return;
+    const z=e.target.closest('[data-z]');
+    if(z){if(!Z.lock&&LV[lv].tools.includes('E')){Z.on=!Z.on;draw()}return}
+    const g=e.target.closest('[data-i]');if(!g)return;
+    const i=+g.dataset.i;if(St[i].lock)return;
+    e.preventDefault();
+    mode=act==='B'?!St[i].b:(St[i].t===act?'':act);
+    painting=true;try{bd.setPointerCapture(e.pointerId)}catch(_){}
+    paint(i);
+  });
+  bd.addEventListener('pointermove',e=>{
+    if(!painting)return;
+    const el=document.elementFromPoint(e.clientX,e.clientY);
+    const g=el&&el.closest&&el.closest('[data-i]');
+    if(g&&bd.contains(g))paint(+g.dataset.i);
+  });
+  ['pointerup','pointercancel','lostpointercapture'].forEach(ev=>bd.addEventListener(ev,()=>painting=false));
+}
+function paint(i){const s=St[i];if(s.lock)return;
+  if(act==='B'){if(s.b===mode)return;s.b=mode}else{if(s.t===mode)return;s.t=mode}
+  draw();}
+
+function expL(){const L=LV[lv],shw=[...L.tools,...(L.pre||[])];
+  return cur.L.map(l=>({ch:l.ch,t:shw.includes(l.t)?l.t:'',b:hasB&&l.t!=='E'}))}
+const expSVG=mini=>wordSVG(expL(),{zero:showZ&&cur.z?{on:true}:null,base:hasB,mini});
+
+function checkWord(){
+  const L=LV[lv];let ok=true;const errs=new Set();
+  St.forEach((s,i)=>{if(s.lock)return;const e=cur.L[i];
+    const et=L.tools.includes(e.t)?e.t:'',eb=e.t!=='E';
+    let g=s.t===et;if(!g)errs.add(et||s.t);
+    if(hasB&&s.b!==eb){g=false;errs.add('B')}
+    s.st=g?'ok':'bad';ok=ok&&g;});
+  if(showZ&&!Z.lock){if(Z.on!==cur.z){ok=false;Z.st='bad';errs.add('Z')}else if(Z.on)Z.st='ok'}
+  done=true;draw();$('#clr').hidden=true;
+  result(ok,`<div class="scheme">${expSVG(false)}</div>`+(errs.size?`<ul>${[...errs].slice(0,2).map(t=>`<li>${TIPS[t]}</li>`).join('')}</ul>`:''),
+    {svg:expSVG(true)});
 }
 
-function train(){
- $('#train').hidden=false;
- $('#train').innerHTML=LV.map((L,i)=>`<div class="wg ${i<lv?'done':i==lv?'cur':''}" style="--c:var(--${L.c})">${i<lv?'✓ ':''}${i+1}. ${L.n}</div>`).join('');
+/* ---------- рівень 2: слова-родичі ---------- */
+function quizItem(it){
+  cur=it;showZ=false;
+  $('#clr').hidden=true;$('#chk').hidden=true;
+  if(it.q==='r'){
+    $('#task').textContent='Ці слова — родичі. Яка в них спільна частина — корінь?';
+    $('#stage').innerHTML=`<div class="chips">${it.ws.map(w=>`<span class="chip">${w}</span>`).join('')}</div>
+      <div class="opts">${it.o.map(v=>`<button class="opt">${v}</button>`).join('')}</div>`;
+  }else{
+    $('#task').textContent='Одне слово тут зайве: воно схоже, але не є родичем інших. Знайди його!';
+    $('#stage').innerHTML=`<div class="opts">${it.o.map(v=>`<button class="opt">${v}</button>`).join('')}</div>`;
+  }
+  document.querySelectorAll('#stage .opt').forEach(b=>b.onclick=()=>pick(b));
+}
+function pick(btn){
+  if(done)return;done=true;
+  const it=cur,v=btn.textContent,ok=v===it.a;
+  document.querySelectorAll('#stage .opt').forEach(x=>{if(x.textContent===it.a)x.classList.add('ok');else if(x===btn)x.classList.add('bad');x.disabled=true});
+  let extra,mtext,fam;
+  if(it.q==='r'){
+    fam=it.ws.map(w=>rootWord(w,it.a)).join('');
+    extra=(ok?'':`<p class="note">Спільна частина всіх слів — «${it.a}».</p>`)+`<div class="fam">${fam}</div>`;
+    mtext=`Корінь слів «${it.ws.join(', ')}» — «${it.a}».`;
+  }else{
+    fam=it.rel.map(w=>rootWord(w,it.root)).join('');
+    extra=`<p class="note">${ok?'':`Зайве слово — «${it.a}». `}${it.note}</p><div class="fam">${fam}</div>`;
+    mtext=`Зайве слово — «${it.a}». ${it.note}`;
+  }
+  $('#chk').hidden=false;
+  result(ok,extra,{text:mtext,fam});
 }
 
-function start(){sc=[0,0,0,0];bad=[];$('#start').hidden=true;$('#end').hidden=true;$('#play').hidden=false;go(0)}
-function go(i){lv=i;items=mk(i);idx=0;show()}
-function nxt(){return(lv==3&&idx==items.length-1)?'Результат':'Далі'}
-
-function show(){
- train();
- if(idx>=items.length){lv<3?go(lv+1):fin();return}
- const L=LV[lv],it=items[idx],st=$('#stage'),tl=$('#tools'),chk=$('#chk');
- done=false;sel=[];zero=false;zb=null;
- $('#lvl').textContent=`Рівень ${lv+1}: ${L.n} (${idx+1} з ${items.length})`;
- $('#fb').hidden=true;$('#hint').hidden=true;st.innerHTML=tl.innerHTML='';
- if(L.k=='q'){
-  chk.hidden=true;
-  const odd=it.q=='o';
-  $('#task').textContent=odd?'Одне слово тут зайве — воно не споріднене з іншими. Знайди його!':'Знайди корінь — спільну частину всіх цих слів.';
-  const box=h('div',odd?'chips':'chips');
-  if(odd){it.ws.forEach(v=>{const b=h('button','opt',v);b.onclick=()=>pick(b,v);box.append(b)});st.append(box)}
-  else{it.ws.forEach(v=>box.append(h('span','chip',v)));st.append(box);const o=h('div','opts');it.o.forEach(v=>{const b=h('button','opt',v);b.onclick=()=>pick(b,v);o.append(b)});st.append(o)}
-  return;
- }
- chk.hidden=false;chk.textContent='Перевірити';
- $('#task').textContent=L.t;
- cur=parse(it);act=L.tools[0];
- const wd=h('div','word');
- tiles=cur.L.map((l,i)=>{const b=h('button','tile',l.ch);
-  b.onclick=()=>{if(done)return;sel[i]=sel[i]==act?'':act;b.className='tile'+(sel[i]?' p':'');b.style.background=sel[i]?`var(--${sel[i]})`:''};
-  wd.append(b);return b});
- st.append(wd);
- L.tools.forEach(t=>{const b=h('button','tool');b.dataset.t=t;
-  b.innerHTML=`<span class="dot" style="background:var(--${t})"></span>${cap(T[t][0])} ${SYM[t]}`;
-  b.onclick=()=>{if(done)return;act=t;upd()};tl.append(b)});
- if(L.tools.includes('E')){zb=h('button','tool','Нульове закінчення (0)');zb.onclick=()=>{if(done)return;zero=!zero;zb.classList.toggle('on',zero)};tl.append(zb)}
- upd();
-}
-function upd(){document.querySelectorAll('#tools [data-t]').forEach(b=>b.classList.toggle('on',b.dataset.t==act))}
-
-function fbk(ok,msg,extra){const f=$('#fb');f.className='fb '+(ok?'ok':'bad');f.textContent=msg;if(extra)f.append(extra);f.hidden=false}
-
-function ans(w,z){
- const d=h('div','ans');
- w.m.forEach(p=>{const g=h('div','g'),r=h('div');
-  [...p.x].forEach(ch=>{const t=h('span','tile p',ch);t.style.background=`var(--${p.t})`;r.append(t)});
-  g.append(r,h('span','',T[p.t][0]));d.append(g)});
- if(z){const g=h('div','g'),r=h('div'),t=h('span','tile p','0');t.style.background='#fff';t.style.border='2px dashed #cfa55f';r.append(t);g.append(r,h('span','','нульове закінчення'));d.append(g)}
- return d;
+/* ---------- відповідь ---------- */
+const PRAISE=['Правильно!','Чудово!','Так тримати!','Точно в ціль!','Справжній детектив!'];
+function result(ok,extraHTML,m){
+  res[lv].push(ok);if(ok)sc[lv]++;else mist.push(m);
+  const word=LV[lv].k==='w';
+  const title=ok?PRAISE[Math.floor(Math.random()*PRAISE.length)]:(word?'Є помилки. Ось правильний розбір:':'Не зовсім.');
+  $('#fb').innerHTML=`<div class="fb ${ok?'ok':'bad'}"><p class="t">${title}</p>${(!ok||!word)?extraHTML:''}</div>`;
+  $('#chk').textContent=nextLabel();
+  head();
 }
 
-function check(){
- const L=LV[lv],w=cur;done=true;let ok=true;
- const ex=w.L.map(l=>L.tools.includes(l.t)?l.t:'');
- const ze=L.tools.includes('E')&&!w.L.some(l=>l.t=='E');
- tiles.forEach((b,i)=>{const g=(sel[i]||'')==ex[i];ok=ok&&g;b.classList.add(g?'ok':'bad')});
- if(zb){if(zero!=ze){ok=false;zb.classList.add('bad')}else if(zero)zb.classList.add('ok')}
- if(ok){sc[lv]++;fbk(true,'Правильно! Слідчий не помилився.')}
- else{
-  bad.push(w.m.map(p=>`${p.x} — ${T[p.t][0]}`).join(', ')+(ze?', закінчення нульове':'')+`. Слово: ${w.s.replace(/\|/g,'')}`);
-  fbk(false,'Є помилки. Правильний розбір:',ans(w,ze));
- }
- $('#chk').textContent=nxt();
+/* ---------- підказка ---------- */
+function hint(){
+  const h=$('#hint');
+  if(!h.hidden){h.hidden=true;return}
+  let wh='';
+  if(lv===0)wh=`Зміни форму: ${cur.word} — ${cur.h}.`;
+  if(lv===1)wh='Порівнюй слова по буквах: корінь повторюється в кожному слові-родичі.';
+  if(lv===2)wh='Префікс стоїть перед коренем, суфікс — між коренем і закінченням.';
+  if(lv===3)wh=cur.h;
+  h.innerHTML=`<p class="wh">${wh}</p><ol class="steps compact">${stepsHTML()}</ol>`;
+  h.hidden=false;
 }
 
-function pick(b,v){
- if(done)return;done=true;
- const it=items[idx],ok=v==it.a;
- document.querySelectorAll('#stage .opt').forEach(x=>{if(x.textContent==it.a)x.classList.add('ok');else if(x==b)x.classList.add('bad');x.disabled=true});
- if(ok){sc[lv]++;fbk(true,it.q=='r'?`Правильно! Корінь — «${it.a}».`:`Правильно! Слово «${it.a}» не споріднене з іншими.`)}
- else{
-  bad.push(it.q=='r'?`Корінь у словах «${it.ws.join(', ')}» — ${it.a}.`:`Зайве слово — «${it.a}». Споріднені слова: ${it.rel.join(', ')}.`);
-  fbk(false,it.q=='r'?`Не зовсім. Спільна частина всіх слів — «${it.a}».`:`Не зовсім. Зайве слово — «${it.a}», бо воно має інший корінь.`);
- }
- $('#chk').hidden=false;$('#chk').textContent=nxt();
+/* ---------- підсумок ---------- */
+function star(f){return `<svg width="44" height="44" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.8-4.9 4.6 1.3 6.5L12 17.2 6.1 20.4l1.3-6.5L2.5 9.3l6.6-.8z" fill="${f?'#f5b82e':'#e3e9f2'}" stroke="${f?'#d99a1a':'#cfd8e6'}" stroke-width="1.2" stroke-linejoin="round"/></svg>`}
+function finish(){
+  lv=4;setTrain();showSec('end');
+  const tot=sc.reduce((a,b)=>a+b,0),p=tot/24,n=p>=.9?3:p>=.65?2:1;
+  const msg=n===3?'Головний детектив потягу! Жодна частина слова не сховалася від тебе.':n===2?'Досвідчений слідчий! Ще трохи — і ти майстер розбору.':'Юний слідчий. Повтори порядок розбору й спробуй ще раз!';
+  const ms=mist.map(m=>m.svg?`<li><div class="fam">${m.svg}</div></li>`:`<li>${m.text}<div class="fam">${m.fam}</div></li>`).join('');
+  $('#end').innerHTML=`<h2>Розслідування завершено!</h2>
+   <div class="big">${tot} з 24</div>
+   <div class="stars">${[0,1,2].map(i=>star(i<n)).join('')}</div>
+   <p class="msg">${msg}</p>
+   ${LV.map((L,i)=>`<div class="lr"><span>${i+1}. ${L.n}</span><div class="bar"><i style="width:${sc[i]/6*100}%;background:${L.c}"></i></div><b>${sc[i]}/6</b></div>`).join('')}
+   ${mist.length?`<h3>Правильні відповіді там, де були помилки</h3><ul class="mist">${ms}</ul>`:'<p class="msg">Жодної помилки — блискуче!</p>'}
+   <div class="row"><button class="btn primary" id="again">Грати знову з новими словами</button></div>`;
+  $('#again').onclick=start;
 }
 
-function fin(){
- lv=4;train();
- $('#play').hidden=true;const e=$('#end');e.hidden=false;
- const tot=sc.reduce((a,b)=>a+b,0),pct=tot/24;
- const n=pct>=.9?3:pct>=.65?2:1;
- const msg=n==3?'Головний детектив потягу! Жоден суфікс не втік від тебе.':n==2?'Досвідчений слідчий. Ще трохи — і ти майстер!':'Юний слідчий. Повтори порядок розбору й спробуй ще раз!';
- e.innerHTML=`<h2>Розслідування завершено!</h2><div class="big">${tot} з 24</div><div class="stars">${'★'.repeat(n)+'☆'.repeat(3-n)}</div><p style="text-align:center;font-weight:700">${msg}</p>`
- +LV.map((L,i)=>`<div class="lr"><span>${i+1}. ${L.n}</span><div class="bar"><i style="width:${sc[i]/6*100}%"></i></div><b>${sc[i]}/6</b></div>`).join('')
- +(bad.length?`<h3>Над чим ще попрацювати</h3><ul>${bad.map(x=>`<li class="m">${x}</li>`).join('')}</ul>`:'<p>Жодної помилки — відмінно!</p>')
- +'<div class="row"><button class="go" id="again">Грати знову (нові слова)</button></div>';
- $('#again').onclick=start;
-}
-
-$('#hint').innerHTML='<ol class="steps">'+document.querySelector('.steps').innerHTML+'</ol>';
-$('#hintb').onclick=()=>$('#hint').hidden=!$('#hint').hidden;
-$('#chk').onclick=()=>{if(!done)check();else{idx++;show()}};
+/* ---------- старт ---------- */
+function demo(){const p=parse('P-під R-вод S-н E-ий');
+  $('#demo').innerHTML=wordSVG(p.L.map(l=>({ch:l.ch,t:l.t,b:l.t!=='E'})),{base:true,anim:true})}
+$('#train').innerHTML=trainHTML();
+$('#steps').innerHTML=stepsHTML();
+demo();$('#demo').onclick=demo;
 $('#go').onclick=start;
+$('#hintb').onclick=hint;
+$('#clr').onclick=()=>{if(done)return;St.forEach(s=>{if(!s.lock){s.t='';s.b=false}});if(!Z.lock)Z.on=false;draw()};
+$('#chk').onclick=()=>{if(!done){if(LV[lv].k==='w')checkWord()}else{idx++;next()}};
 </script>
 </body>
 </html>
